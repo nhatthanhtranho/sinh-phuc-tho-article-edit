@@ -1,6 +1,6 @@
 'use client'
 import { isEmpty } from 'lodash'
-import RichTextEditor from "@/components/RichTextEditor";
+import {Editor} from "@/components/RichTextEditor";
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import { convertToSlug } from '@/utils/convertToSlug';
@@ -72,7 +72,7 @@ export default function Home() {
           onChange={(e) => setTitle(e.target.value)}
         />
       </div>
-      <RichTextEditor value={content} onChange={setContent} />
+      <Editor data={content} setData={setContent} />
       <button
         onClick={() => { handleSave(id) }}
         className="mt-[60px] bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer w-40"
