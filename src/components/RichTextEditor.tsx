@@ -1,301 +1,66 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import {
-    ClassicEditor,
-    Autoformat,
-    AutoImage,
-    Autosave,
-    BlockQuote,
-    Bold,
-    CKBox,
-    CKBoxImageEdit,
-    CloudServices,
-    Essentials,
-    Heading,
-    ImageBlock,
-    ImageCaption,
-    ImageInline,
-    ImageInsert,
-    ImageInsertViaUrl,
-    ImageResize,
-    ImageStyle,
-    ImageTextAlternative,
-    ImageToolbar,
-    ImageUpload,
-    Indent,
-    IndentBlock,
-    Italic,
-    Link,
-    LinkImage,
-    List,
-    ListProperties,
-    MediaEmbed,
-    Paragraph,
-    PasteFromOffice,
-    PictureEditing,
-    Table,
-    TableCaption,
-    TableCellProperties,
-    TableColumnResize,
-    TableProperties,
-    TableToolbar,
-    TextTransformation,
-    TodoList,
-    Underline
-} from 'ckeditor5';
+import dynamic from "next/dynamic";
+import { useRef } from "react";
+import "react-quill/dist/quill.snow.css";
 
-import 'ckeditor5/ckeditor5.css';
-
-import './style.css';
-
-const LICENSE_KEY =
-    'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3Mzk2NjM5OTksImp0aSI6IjA3MjhhNTBhLTBlMzEtNGViMC1hNmZjLTY3YjRmMTc5YWNjYSIsInVzYWdlRW5kcG9pbnQiOiJodHRwczovL3Byb3h5LWV2ZW50LmNrZWRpdG9yLmNvbSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiLCJzaCJdLCJ3aGl0ZUxhYmVsIjp0cnVlLCJsaWNlbnNlVHlwZSI6InRyaWFsIiwiZmVhdHVyZXMiOlsiKiJdLCJ2YyI6IjE3ZjMzMTZiIn0.r09vNmF6SMh0OhcgmFQI-9qg3zjsLyMTZrUUbbr00e3gifaZRkpsv0_dsNlmaUiXwFMNc5CAVaKzBZpcA5jUUg';
-
-const CLOUD_SERVICES_TOKEN_URL =
-    'https://gmhc18ol60hc.cke-cs.com/token/dev/0835d24d25b7fae0fcdc89458b309a9a33ebd0986cb31366ce3fe4e9b8e4?limit=10';
+// Dynamically import ReactQuill (Fixes SSR issue in Next.js)
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 interface EditorProps {
-    data: string;
+    content: string;
     // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-    setData: Function;
+    setContent: Function;
 }
 
-export const Editor: React.FC<EditorProps> = ({ data, setData }) => {
-    const editorContainerRef = useRef(null);
-    const editorRef = useRef(null);
-    const [isLayoutReady, setIsLayoutReady] = useState(false);
 
-    useEffect(() => {
-        setIsLayoutReady(true);
+const Editor: React.FC<EditorProps> = ({ content, setContent }) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const quillRef = useRef<any>(null); // TypeScript Fix
 
-        return () => setIsLayoutReady(false);
-    }, []);
+  const insertImageByURL = () => {
+    const url = prompt("Nhập Image URL:");
+    const altText = prompt("Nhập Image Alt");
 
-    const { editorConfig } = useMemo(() => {
-        if (!isLayoutReady) {
-            return {};
-        }
-
-        return {
-            editorConfig: {
-                toolbar: {
-                    items: [
-                        'heading',
-                        '|',
-                        'bold',
-                        'italic',
-                        'underline',
-                        '|',
-                        'link',
-                        'insertImage',
-                        'ckbox',
-                        'mediaEmbed',
-                        'insertTable',
-                        'blockQuote',
-                        '|',
-                        'bulletedList',
-                        'numberedList',
-                        'todoList',
-                        'outdent',
-                        'indent'
-                    ],
-                    shouldNotGroupWhenFull: false
-                },
-                plugins: [
-                    Autoformat,
-                    AutoImage,
-                    Autosave,
-                    BlockQuote,
-                    Bold,
-                    CKBox,
-                    CKBoxImageEdit,
-                    CloudServices,
-                    Essentials,
-                    Heading,
-                    ImageBlock,
-                    ImageCaption,
-                    ImageInline,
-                    ImageInsert,
-                    ImageInsertViaUrl,
-                    ImageResize,
-                    ImageStyle,
-                    ImageTextAlternative,
-                    ImageToolbar,
-                    ImageUpload,
-                    Indent,
-                    IndentBlock,
-                    Italic,
-                    Link,
-                    LinkImage,
-                    List,
-                    ListProperties,
-                    MediaEmbed,
-                    Paragraph,
-                    PasteFromOffice,
-                    PictureEditing,
-                    Table,
-                    TableCaption,
-                    TableCellProperties,
-                    TableColumnResize,
-                    TableProperties,
-                    TableToolbar,
-                    TextTransformation,
-                    TodoList,
-                    Underline
-                ],
-                cloudServices: {
-                    tokenUrl: CLOUD_SERVICES_TOKEN_URL
-                },
-                heading: {
-                    options: [
-                        {
-                            model: 'paragraph',
-                            title: 'Paragraph',
-                            class: 'ck-heading_paragraph'
-                        },
-                        {
-                            model: 'heading1',
-                            view: 'h1',
-                            title: 'Heading 1',
-                            class: 'ck-heading_heading1'
-                        },
-                        {
-                            model: 'heading2',
-                            view: 'h2',
-                            title: 'Heading 2',
-                            class: 'ck-heading_heading2'
-                        },
-                        {
-                            model: 'heading3',
-                            view: 'h3',
-                            title: 'Heading 3',
-                            class: 'ck-heading_heading3'
-                        },
-                        {
-                            model: 'heading4',
-                            view: 'h4',
-                            title: 'Heading 4',
-                            class: 'ck-heading_heading4'
-                        },
-                        {
-                            model: 'heading5',
-                            view: 'h5',
-                            title: 'Heading 5',
-                            class: 'ck-heading_heading5'
-                        },
-                        {
-                            model: 'heading6',
-                            view: 'h6',
-                            title: 'Heading 6',
-                            class: 'ck-heading_heading6'
-                        }
-                    ]
-                },
-                image: {
-                    toolbar: [
-                        'toggleImageCaption',
-                        'imageTextAlternative',
-                        '|',
-                        'imageStyle:inline',
-                        'imageStyle:wrapText',
-                        'imageStyle:breakText',
-                        '|',
-                        'resizeImage',
-                        '|',
-                        'ckboxImageEdit'
-                    ]
-                },
-                initialData:
-                    '<h2>Congratulations on setting up CKEditor 5! 🎉</h2>\n<p>\n\tYou\'ve successfully created a CKEditor 5 project. This powerful text editor\n\twill enhance your application, enabling rich text editing capabilities that\n\tare customizable and easy to use.\n</p>\n<h3>What\'s next?</h3>\n<ol>\n\t<li>\n\t\t<strong>Integrate into your app</strong>: time to bring the editing into\n\t\tyour application. Take the code you created and add to your application.\n\t</li>\n\t<li>\n\t\t<strong>Explore features:</strong> Experiment with different plugins and\n\t\ttoolbar options to discover what works best for your needs.\n\t</li>\n\t<li>\n\t\t<strong>Customize your editor:</strong> Tailor the editor\'s\n\t\tconfiguration to match your application\'s style and requirements. Or\n\t\teven write your plugin!\n\t</li>\n</ol>\n<p>\n\tKeep experimenting, and don\'t hesitate to push the boundaries of what you\n\tcan achieve with CKEditor 5. Your feedback is invaluable to us as we strive\n\tto improve and evolve. Happy editing!\n</p>\n<h3>Helpful resources</h3>\n<ul>\n\t<li>📝 <a href="https://portal.ckeditor.com/checkout?plan=free">Trial sign up</a>,</li>\n\t<li>📕 <a href="https://ckeditor.com/docs/ckeditor5/latest/installation/index.html">Documentation</a>,</li>\n\t<li>⭐️ <a href="https://github.com/ckeditor/ckeditor5">GitHub</a> (star us if you can!),</li>\n\t<li>🏠 <a href="https://ckeditor.com">CKEditor Homepage</a>,</li>\n\t<li>🧑‍💻 <a href="https://ckeditor.com/ckeditor-5/demo/">CKEditor 5 Demos</a>,</li>\n</ul>\n<h3>Need help?</h3>\n<p>\n\tSee this text, but the editor is not starting up? Check the browser\'s\n\tconsole for clues and guidance. It may be related to an incorrect license\n\tkey if you use premium features or another feature-related requirement. If\n\tyou cannot make it work, file a GitHub issue, and we will help as soon as\n\tpossible!\n</p>\n',
-                licenseKey: LICENSE_KEY,
-                link: {
-                    addTargetToExternalLinks: true,
-                    defaultProtocol: 'https://',
-                    decorators: {
-                        toggleDownloadable: {
-                            mode: 'manual',
-                            label: 'Downloadable',
-                            attributes: {
-                                download: 'file'
-                            }
-                        }
-                    }
-                },
-                list: {
-                    properties: {
-                        styles: true,
-                        startIndex: true,
-                        reversed: true
-                    }
-                },
-                placeholder: 'Type or paste your content here!',
-                table: {
-                    contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties']
-                }
-            }
-        };
-    }, [isLayoutReady]);
-
-    useEffect(() => {
-        if (editorConfig) {
-            configUpdateAlert(editorConfig);
-        }
-    }, [editorConfig]);
-
-    return (
-        <div className="main-container">
-            <div className="editor-container editor-container_classic-editor" ref={editorContainerRef}>
-                <div className="editor-container__editor">
-                    <div ref={editorRef}>{editorConfig && <CKEditor editor={ClassicEditor} config={editorConfig}
-                        data={data}
-                        onChange={(event, editor) => {
-                            const data = editor.getData();
-                            setData(data)
-                        }}
-                    />}</div>
-                </div>
-            </div>
-        </div>
-    );
-}
-
-/**
- * This function exists to remind you to update the config needed for premium features.
- * The function can be safely removed. Make sure to also remove call to this function when doing so.
- */
-function configUpdateAlert(config) {
-    if (configUpdateAlert.configUpdateAlertShown) {
-        return;
+    if (url && quillRef.current) {
+      const editor = quillRef.current.getEditor(); // Fix: Use `.getEditor()`
+      const range = editor?.getSelection(); // Get cursor position
+      editor?.insertEmbed(range.index, "image", { src: url, alt: altText });
     }
+  };
 
-    const isModifiedByUser = (currentValue, forbiddenValue) => {
-        if (currentValue === forbiddenValue) {
-            return false;
-        }
+  const handleTextAlignment = (alignment: string) => {
+    const editor = quillRef.current?.getEditor();
+    editor?.format("align", alignment); // Apply the alignment
+  };
 
-        if (currentValue === undefined) {
-            return false;
-        }
+  return (
+    <div className="w-full">
+      <button
+  onClick={insertImageByURL}
+  className="px-4 py-2 bg-red-500 text-white text-sm rounded mb-3 shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+>
+  Insert Image by URL
+</button>
+      <ReactQuill
+        ref={quillRef}
+        theme="snow"
+        value={content}
+        onChange={(content: string) => setContent(content)}
+        modules={{
+          toolbar: [
+            [{ header: [1, 2, 3,4,5, false] }],
+            ["bold", "italic", "underline"],
+            [{ list: "ordered" }, { list: "bullet" }],
+            ["link", "image"],
+            ["clean"],
+            [{ align: "" }, { align: "center" }, { align: "right" }],
+          ],
+        }}
 
-        return true;
-    };
+        style={{height: '500px'}}
 
-    const valuesToUpdate = [];
+      />
+    </div>
+  );
+};
 
-    configUpdateAlert.configUpdateAlertShown = true;
-
-    if (!isModifiedByUser(config.cloudServices?.tokenUrl, '<YOUR_CLOUD_SERVICES_TOKEN_URL>')) {
-        valuesToUpdate.push('CLOUD_SERVICES_TOKEN_URL');
-    }
-
-    if (valuesToUpdate.length) {
-        window.alert(
-            [
-                'Please update the following values in your editor config',
-                'to receive full access to Premium Features:',
-                '',
-                ...valuesToUpdate.map(value => ` - ${value}`)
-            ].join('\n')
-        );
-    }
-}
+export default Editor;

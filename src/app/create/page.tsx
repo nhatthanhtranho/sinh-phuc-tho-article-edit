@@ -1,6 +1,6 @@
 'use client'
 import { isEmpty } from 'lodash'
-import {Editor} from "@/components/RichTextEditor";
+import Editor from "@/components/RichTextEditor";
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import { convertToSlug } from '@/utils/convertToSlug';
@@ -63,16 +63,16 @@ export default function Home() {
     }
   }
   return (
-    <div className="flex flex-col w-screen h-screen items-center justify-center mt-20">
+    <div className="flex flex-col items-center justify-center mt-20 px-20">
       <h1 className="font-bold text-2xl mb-10">Tạo bài vết mới</h1>
-      <div className="w-full px-12 mb-5">
+      <div className="w-full mb-5">
         <label htmlFor="title" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tiêu đề</label>
         <input type="text" id="title" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Tiêu đề"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
       </div>
-      <Editor data={content} setData={setContent} />
+      <Editor content={content} setContent={setContent} key={'my editor'} />
       <button
         onClick={() => { handleSave(id) }}
         className="mt-[60px] bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer w-40"

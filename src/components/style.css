@@ -1,20 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
-.ql-container {
-    min-height: 30rem;
-    height: 100%;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    width: 1440px;
-  }
-  
-  .ql-editor {
-    height: 100%;
-    flex: 1;
-    overflow-y: auto;
-    width: 100%;
-  }
+
 
 
 @media print {

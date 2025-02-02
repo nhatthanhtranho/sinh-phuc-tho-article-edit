@@ -37,17 +37,20 @@ const PostLayout = ({ children }: Props) => {
                         lg: '1320px'
                     }}
                     px={{
-                        xs: 2
+                        xs: 0
                     }}
                     justifyContent={'space-between'}>
-                    <Box pr={5}>
+                    <Box px={{
+                        xs: 2,
+                        lg: 6
+                    }}>
                         {children}
                     </Box>
                     <RelativePostList posts={postData} />
                 </Box>
             </Box>
             <Footer />
-        </div>
+        </div >
     );
 };
 

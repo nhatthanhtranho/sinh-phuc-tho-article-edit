@@ -1,7 +1,8 @@
 import { Box, Chip, Typography } from '@mui/material';
 import React from 'react';
 import Introduction from './Introduction';
-import { formatDate } from '@/utils/formatDate';
+import { formatDateString } from '@/utils/formatDate';
+import './article.style.css';
 interface ReviewArticleProps {
     id: string;
 }
@@ -42,8 +43,8 @@ const ReviewArticle: React.FC<ReviewArticleProps> = ({ id }) => {
             <Typography variant='h5' fontWeight={700} mt={2} color={'#837500'}>
                 {article?.title}
             </Typography>
-            <Typography mb={4} mt={1} variant='body2'>{formatDate(new Date(article!.createdAt))}</Typography>
-            <Box dangerouslySetInnerHTML={{ __html: article?.content || '' }} />
+            <Typography mb={4} mt={1} variant='body2'>{formatDateString(article?.createdAt)}</Typography>
+            <Box dangerouslySetInnerHTML={{ __html: article?.content || '' }} component={'div'} className='article'/>
             <Introduction />
         </Box>
     )
