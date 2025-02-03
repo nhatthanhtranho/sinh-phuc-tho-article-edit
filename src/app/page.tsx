@@ -11,11 +11,13 @@ const Page: React.FC = () => {
         const fetchData = async () => {
             try {
                 const response = await axios.get('http://localhost:3000/articles');
+                console.log(response.data[0].thumbnail);
                 setArticles(response.data);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
+
 
         fetchData();
     }, []);

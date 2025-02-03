@@ -7,57 +7,51 @@ const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 interface EditorProps {
     content: string;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-    setContent: Function;
+    setContent: (value: string) => void;
 }
 
-
 const Editor: React.FC<EditorProps> = ({ content, setContent }) => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const quillRef = useRef<any>(null); // TypeScript Fix
+  const quillRef = useRef<ReactQuill | null>(null);
 
   const insertImageByURL = () => {
     const url = prompt("Nhập Image URL:");
-    const altText = prompt("Nhập Image Alt");
+    const altText = prompt("Nhập Image Alt:");
 
     if (url && quillRef.current) {
-      const editor = quillRef.current.getEditor(); // Fix: Use `.getEditor()`
-      const range = editor?.getSelection(); // Get cursor position
-      editor?.insertEmbed(range.index, "image", { src: url, alt: altText });
+      const editor = quillRef.current.getEditor();
+      const range = editor?.getSelection();
+      if (range) {
+        // Insert custom <img> tag with alt attribute
+        const imgTag = `<img src="${url}" alt="${altText || ""}" style="max-width:100%; height:auto;" />`;
+        editor.clipboard.dangerouslyPasteHTML(range.index, imgTag);
+      }
     }
-  };
-
-  const handleTextAlignment = (alignment: string) => {
-    const editor = quillRef.current?.getEditor();
-    editor?.format("align", alignment); // Apply the alignment
   };
 
   return (
     <div className="w-full">
       <button
-  onClick={insertImageByURL}
-  className="px-4 py-2 bg-red-500 text-white text-sm rounded mb-3 shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
->
-  Insert Image by URL
-</button>
+        onClick={insertImageByURL}
+        className="px-4 py-2 bg-red-500 text-white text-sm rounded mb-3 shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+      >
+        Insert Image by URL
+      </button>
       <ReactQuill
         ref={quillRef}
         theme="snow"
         value={content}
-        onChange={(content: string) => setContent(content)}
+        onChange={setContent}
         modules={{
           toolbar: [
-            [{ header: [1, 2, 3,4,5, false] }],
+            [{ header: [1, 2, 3, 4, 5, false] }],
             ["bold", "italic", "underline"],
             [{ list: "ordered" }, { list: "bullet" }],
             ["link", "image"],
             ["clean"],
-            [{ align: "" }, { align: "center" }, { align: "right" }],
+            [{ align: [] }],
           ],
         }}
-
-        style={{height: '500px'}}
-
+        style={{ height: "500px" }}
       />
     </div>
   );
