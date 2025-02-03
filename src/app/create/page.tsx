@@ -6,6 +6,18 @@ import axios from 'axios';
 import { convertToSlug } from '@/utils/convertToSlug';
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation'
+import RoundedImage from '@/components/SquareImage';
+
+const CATEGORIES = [
+  {
+    name: 'Bài viết',
+    value: 'news'
+  },
+  {
+    name: 'Dịch vụ',
+    value: 'service'
+  }
+]
 
 export default function Home() {
   const searchParams = useSearchParams()
@@ -85,21 +97,44 @@ export default function Home() {
     }
   }
   return (
-    <div className="flex flex-col items-center justify-center mt-10 px-20">
+    <div className="flex relative flex-col items-center justify-center mt-10 px-20">
+      <button className="flex absolute top-0 left-20 px-4 py-2 text-white bg-black rounded hover:bg-gray-700 transition shadow"
+        onClick={() => router.push('/')}
+      >
+        Quay lại
+      </button>
       <h1 className="font-bold text-4xl mb-10 uppercase">Tạo bài viết mới</h1>
-      <div className="w-full mb-5">
-        <label htmlFor="title" className="block mb-2 font-bold uppercase text-gray-900 dark:text-white">Tiêu đề</label>
-        <input type="text" id="title" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Nhập tiêu đề"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-      </div>
-      <div className="w-full mb-5">
-        <label htmlFor="title" className="block mb-2 font-bold uppercase text-gray-900 dark:text-white">Thumbnail</label>
-        <input type="text" id="thumbnail" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder={`https://sinhphuctho.com/public/images/${convertToSlug(title)}/thumbnail.webp`}
-          value={thumbnail}
-          onChange={(e) => setThumbnail(e.target.value)}
-        />
+      <div className='flex flex-row w-full'>
+        <div className='w-1/3 px-2'>
+          <div className="w-full mb-5">
+            <label htmlFor="title" className="block mb-2 font-bold uppercase text-gray-900 dark:text-white">Tiêu đề</label>
+            <input type="text" id="title" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Nhập tiêu đề"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          </div>
+          <div className="w-full mb-5">
+            <label htmlFor="title" className="block mb-2 font-bold uppercase text-gray-900 dark:text-white">Thumbnail</label>
+            <input type="text" id="thumbnail" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder={`https://sinhphuctho.com/public/images/${convertToSlug(title)}/thumbnail.webp`}
+              value={thumbnail}
+              onChange={(e) => setThumbnail(e.target.value)}
+            />
+          </div>
+        </div>
+        <div className='w-1/3 px-2'>
+          <label htmlFor="select" className="block mb-2 font-bold uppercase text-gray-900 dark:text-white">Category</label>
+          <select id="select" className="w-full border rounded-md text-gray-700 focus:ring focus:ring-blue-300 h-10">
+            {CATEGORIES.map((category) => {
+              return <option value={category.value} key={category.value}>{category.name}</option>
+            })}
+          </select>
+        </div>
+        <div className='w-1/3 px-2'>
+          <label htmlFor="thumbnail" className="block mb-2 font-bold uppercase text-gray-900 dark:text-white">Thumbnail</label>
+          <div id='thumbnail'>
+            <RoundedImage src={thumbnail} />
+          </div>
+        </div>
       </div>
       <Editor content={content} setContent={setContent} key={'my editor'} />
       <button
