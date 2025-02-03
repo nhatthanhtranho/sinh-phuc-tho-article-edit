@@ -97,6 +97,7 @@ export default function Home() {
     })
     setTitle('')
     setContent('')
+    localStorage.clear()
     router.push('/')
   }
   const handleUpdate = async (id: string) => {

@@ -36,7 +36,7 @@ const Page: React.FC = () => {
                 <h1 className="text-3xl font-bold text-center my-10">Danh sách bài viết</h1>
                 <button className="mr-12 absolute right-0 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer w-40" onClick={() => window.location.href = '/create'}>Tạo mới</button>
             </div>
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4'>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-10'>
                 {renderArticles}
             </div>
         </div>
