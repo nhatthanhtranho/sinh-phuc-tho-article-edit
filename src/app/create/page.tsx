@@ -22,6 +22,7 @@ const CATEGORIES = [
 ]
 
 export default function Home() {
+  const API_URL = process.env.NEXT_PUBLIC_API;
   const searchParams = useSearchParams()
   const id = searchParams.get('id');
   const router = useRouter()
@@ -34,7 +35,7 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState('news')
   useEffect(() => {
     if (id) {
-      axios.get(`http://localhost:3000/articles/${id}`).then(res => {
+      axios.get(`${API_URL}/articles/${id}`).then(res => {
         setTitle(res.data.title);
         setContent(res.data.content);
         setThumbnail(res.data.thumbnail);

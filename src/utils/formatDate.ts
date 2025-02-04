@@ -20,11 +20,3 @@ export function formatDateString(dateString?: string): string {
   // Return the formatted date in dd/mm/yyyy format
   return `${day}/${month}/${year}`;
 }
-
-// Example usage
-try {
-  const formattedDate = formatDateString('2025-02-02');
-  console.log(formattedDate); // Output: "02/02/2025"
-} catch (error: any) {
-  console.error(error.message);
-}

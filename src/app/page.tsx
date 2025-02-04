@@ -6,11 +6,12 @@ import axios from 'axios';
 import React, { useEffect, useMemo, useState } from 'react';
 
 const Page: React.FC = () => {
+    const API_URL = process.env.NEXT_PUBLIC_API;
     const [articles, setArticles] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://localhost:3000/articles');
+                const response = await axios.get(`${API_URL}/articles`);
                 console.log(response.data[0].thumbnail);
                 setArticles(response.data);
             } catch (error) {
