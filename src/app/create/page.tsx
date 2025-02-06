@@ -78,7 +78,7 @@ export default function Home() {
     if (isEmpty(title)) {
       return
     }
-    const slug = await axios.post(`http://localhost:3000/articles/create-slug`, {
+    const slug = await axios.post(`${process.env.NEXT_PUBLIC_API}/articles/create-slug`, {
       title
     })
     setSlug(slug.data)
@@ -88,7 +88,7 @@ export default function Home() {
     if (isEmpty(title) || isEmpty(content)) {
       return
     }
-    await axios.post('http://localhost:3000/articles', {
+    await axios.post(`${process.env.NEXT_PUBLIC_API}/articles`, {
       title,
       content,
       thumbnail: `https://sinhphuctho.com/public/images/${slug}/thumbnail.webp`,
@@ -105,7 +105,7 @@ export default function Home() {
     if (isEmpty(title) || isEmpty(content)) {
       return
     }
-    await axios.put(`http://localhost:3000/articles/${id}`, {
+    await axios.put(`${process.env.NEXT_PUBLIC_API}/articles/${id}`, {
       title,
       content,
       thumbnail: thumbnail ? thumbnail : `https://sinhphuctho.com/public/images/${convertToSlug(title)}/thumbnail.webp`,

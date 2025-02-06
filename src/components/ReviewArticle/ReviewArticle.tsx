@@ -21,7 +21,7 @@ const ReviewArticle: React.FC<ReviewArticleProps> = ({ id }) => {
     React.useEffect(() => {
         const fetchArticle = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/articles/${id}`);
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API}/articles/${id}`);
                 const data = await response.json();
                 setArticle(data);
             } catch (error) {
