@@ -6,6 +6,7 @@ import axios from 'axios';
 import React, { useEffect, useMemo, useState } from 'react';
 
 const Page: React.FC = () => {
+    console.log(process.env)
     const API_URL = process.env.NEXT_PUBLIC_API;
     const [articles, setArticles] = useState([]);
     useEffect(() => {

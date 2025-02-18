@@ -18,6 +18,9 @@ const CATEGORIES = [
   {
     name: 'Dịch vụ',
     value: 'service'
+  }, {
+    name: "Nhà tang lễ",
+    value:"nha-tang-le"
   }
 ]
 
@@ -33,6 +36,7 @@ export default function Home() {
   const [keywords, setKeywords] = useState('')
   const [description, setDescription] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('news')
+  
   useEffect(() => {
     if (id) {
       axios.get(`${API_URL}/articles/${id}`).then(res => {
@@ -40,9 +44,10 @@ export default function Home() {
         setContent(res.data.content);
         setThumbnail(res.data.thumbnail);
         setSlug(res.data.slug);
+        setSelectedCategory(res.data.category);
       })
     }
-  }, [id])
+  }, [API_URL, id])
 
   // Load saved state from localStorage
   useEffect(() => {
